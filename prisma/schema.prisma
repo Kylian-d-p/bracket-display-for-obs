@@ -10,31 +10,21 @@ datasource db {
 model Brackets {
   id          String    @id @default(cuid())
   name        String
-  description String
+  description String?
   Matches     Matches[]
 
   @@map("brackets")
 }
 
-model Teams {
-  id         String    @id @default(cuid())
-  name       String
-  Matches_t1 Matches[] @relation("Matches_t1")
-  Matches_t2 Matches[] @relation("Matches_t2")
-
-  @@map("teams")
-}
-
 model Matches {
   id         String    @id @default(cuid())
   bracket_id String
-  team1_id   String
-  team2_id   String
+  team1      String?
+  team2      String?
   score1     Int?
   score2     Int?
   date       DateTime?
-  team1      Teams     @relation("Matches_t1", fields: [team1_id], references: [id])
-  team2      Teams     @relation("Matches_t2", fields: [team2_id], references: [id])
+  phase      Int
   bracket    Brackets  @relation(fields: [bracket_id], references: [id])
 
   @@map("matches")
